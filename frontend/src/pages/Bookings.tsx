@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { api, type Booking } from "../api";
 
-export default function Bookings({ user }: any) {
+export default function Bookings() {
   const [items, setItems] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
 
