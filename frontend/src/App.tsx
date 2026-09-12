@@ -117,9 +117,9 @@ export default function App() {
           <Route path="/plan-trip" element={<PlanTrip />} />
           <Route path="/login" element={<Login setUser={setUser} />} />
           <Route path="/register" element={<Register setUser={setUser} />} />
-          <Route path="/bookings" element={user ? <Bookings user={user} /> : <Login setUser={setUser} />} />
+          <Route path="/bookings" element={user ? <Bookings /> : <Login setUser={setUser} />} />
           <Route path="/provider" element={user ? <ProviderDashboard user={user} /> : <Login setUser={setUser} />} />
-          <Route path="/admin" element={user ? <AdminDashboard user={user} /> : <Login setUser={setUser} />} />
+          <Route path="/admin" element={user ? <AdminDashboard /> : <Login setUser={setUser} />} />
         </Routes>
       </main>
 
