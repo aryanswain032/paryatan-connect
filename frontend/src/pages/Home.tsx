@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { api, type Destination } from "../api";
 import {
   MapPin, Users, Sparkles, ShieldCheck, TrendingUp, Search, Brain,
-  Languages, Building2, BarChart3, Leaf, ArrowRight, CheckCircle2, Target
+  Languages, Building2, BarChart3, Leaf, CheckCircle2, Target
 } from "lucide-react";
 
 const T: any = {
