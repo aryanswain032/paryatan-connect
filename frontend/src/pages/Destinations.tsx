@@ -10,7 +10,7 @@ export default function Destinations() {
   const [state, setState] = useState("");
   const [category, setCategory] = useState("");
   const [crowd, setCrowd] = useState("");
-
+  const [allStates, setAllStates] = useState<string[]>([]);
   const load = () => {
     setLoading(true);
     const params: any = {};
@@ -23,8 +23,16 @@ export default function Destinations() {
       .finally(() => setLoading(false));
   };
 
-  useEffect(() => { load(); }, []);
-  useEffect(() => { load(); }, [state, category, crowd]);
+  // On mount: load all destinations once to get unique states
+useEffect(() => {
+  api.get("/api/destinations").then(r => {
+    const states = Array.from(new Set(r.data.map((d: Destination) => d.state))).sort();
+    setAllStates(states as string[]);
+  });
+}, []);
+
+useEffect(() => { load(); }, []);
+useEffect(() => { load(); }, [state, category, crowd]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
@@ -39,8 +47,10 @@ export default function Destinations() {
             className="w-full pl-10 pr-3 py-2 border rounded-lg focus:ring-2 focus:ring-brand-teal outline-none" />
         </div>
         <select value={state} onChange={e => setState(e.target.value)} className="px-3 py-2 border rounded-lg">
-          <option value="">All States</option>
-          <option value="Odisha">Odisha</option>
+         <option value="">All States</option>
+          {allStates.map(s => (
+         <option key={s} value={s}>{s}</option>
+         ))}
         </select>
         <select value={category} onChange={e => setCategory(e.target.value)} className="px-3 py-2 border rounded-lg">
           <option value="">All Categories</option>
