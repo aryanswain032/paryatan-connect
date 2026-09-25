@@ -14,6 +14,7 @@ import Bookings from "./pages/Bookings";
 import ProviderDashboard from "./pages/ProviderDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import { Compass, Menu, X } from "lucide-react";
+import AIAssistant from "./components/AIAssistant";
 
 
 export default function App() {
@@ -114,6 +115,7 @@ export default function App() {
             
           </div>
         )}
+        <AIAssistant />
       </nav>
 
       <main className="flex-1">
