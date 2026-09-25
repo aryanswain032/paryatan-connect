@@ -1,5 +1,4 @@
-﻿from sqlalchemy.orm
-import Session
+﻿from sqlalchemy.orm import Session
 from main import Profile, Destination, Activity, Guide, Business, Review, DemandMetric, hash_pw
 
 
@@ -16,7 +15,6 @@ if existing_count > 0:
     db.query(Activity).delete()
     db.query(Business).delete()
     db.query(Guide).delete()
-    db.query(Favorite).delete()
     db.query(Destination).delete()
     db.commit()
     print("Cleared old destinations, re-seeding with full dataset...")
