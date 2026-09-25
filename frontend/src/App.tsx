@@ -13,7 +13,7 @@ import Register from "./pages/Register";
 import Bookings from "./pages/Bookings";
 import ProviderDashboard from "./pages/ProviderDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
-import { Compass, Menu, X, Globe } from "lucide-react";
+import { Compass, Menu, X } from "lucide-react";
 
 
 export default function App() {
