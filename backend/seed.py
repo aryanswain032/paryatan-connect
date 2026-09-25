@@ -28,11 +28,11 @@ def seed_all(SessionLocal):
             Profile(email="business@demo.com", hashed_password=hash_pw("demo1234"), full_name="Demo Business", role="business", consent_given=True),
             Profile(email="admin@demo.com", hashed_password=hash_pw("demo1234"), full_name="Demo Admin", role="admin", consent_given=True),
         ]
-        for u in users:
+    for u in users:
             db.add(u)
-        db.commit()
+    db.commit()
 
-        dests = [
+    dests = [
             ("Bhubaneswar","bhubaneswar","Odisha","Khordha","Temple city.","heritage,culture,food",20.2961,85.8245,"Oct-Mar",False),
             ("Puri","puri","Odisha","Puri","Coastal town.","spiritual,beach,culture",19.8135,85.8312,"Oct-Feb",False),
             ("Konark","konark","Odisha","Puri","Sun Temple.","heritage,culture",19.8876,86.0945,"Oct-Mar",False),
@@ -70,7 +70,7 @@ def seed_all(SessionLocal):
             ("Amritsar","amritsar","Punjab","Amritsar","Golden Temple.","spiritual,food,culture",31.6340,74.8723,"Oct-Mar",True),
             ("Hyderabad","hyderabad","Telangana","Hyderabad","Biryani city.","heritage,food,shopping",17.3850,78.4867,"Oct-Feb",True),
         ]
-        for d in dests:
+    for d in dests:
             db.add(Destination(
                 name=d[0], slug=d[1], state=d[2], district=d[3],
                 description=d[4], categories=d[5].split(","),
@@ -78,9 +78,9 @@ def seed_all(SessionLocal):
                 is_emerging=d[9],
                 image_url="https://picsum.photos/seed/" + d[1] + "/800/500"
             ))
-        db.commit()
+    db.commit()
 
-        acts = [
+    acts = [
             (1,"Lingaraj Temple Walk","Temple tour.","heritage",120,"300-800 INR"),
             (2,"Jagannath Darshan","Spiritual visit.","spiritual",120,"Free"),
             (3,"Konark Sun Temple Tour","Chariot tour.","heritage",150,"400-900 INR"),
@@ -98,11 +98,11 @@ def seed_all(SessionLocal):
             (35,"Golden Temple Visit","Darshan.","spiritual",120,"Free"),
             (36,"Hyderabad Biryani Trail","Biryani walk.","food",120,"800-1500 INR"),
         ]
-        for a in acts:
+    for a in acts:
             db.add(Activity(destination_id=a[0], name=a[1], description=a[2], category=a[3], duration_minutes=a[4], price_range=a[5]))
-        db.commit()
+    db.commit()
 
-        guides = [
+    guides = [
             ("Rajesh Mohanty","Heritage guide.","Bhubaneswar",["English","Hindi","Odia"],["heritage","culture"],1800,4.8,34),
             ("Priya Das","Odissi expert.","Puri",["English","Odia"],["culture"],1500,4.7,28),
             ("Sanjay Behera","Wildlife guide.","Chilika",["English","Hindi"],["wildlife"],2200,4.9,42),
@@ -112,11 +112,11 @@ def seed_all(SessionLocal):
             ("Lakshmi Nair","Kerala guide.","Alleppey",["English"],["nature"],1900,4.7,22),
             ("Karthik Iyer","TN temple guide.","Madurai",["English","Tamil"],["heritage"],1700,4.6,18),
         ]
-        for g in guides:
+    for g in guides:
             db.add(Guide(name=g[0], bio=g[1], location=g[2], languages=g[3], specialties=g[4], price_per_day=g[5], rating=g[6], review_count=g[7], verification_status="verified", image_url="https://i.pravatar.cc/200?u=" + g[0].replace(" ","")))
-        db.commit()
+    db.commit()
 
-        biz = [
+    biz = [
             ("Hotel Kalinga Grand","hotel","Business hotel.","Bhubaneswar","mid",1),
             ("Chilika Lake Resort","hotel","Eco-resort.","Chilika","high",5),
             ("Dalma Restaurant","restaurant","Odia thali.","Bhubaneswar","low",1),
@@ -132,11 +132,10 @@ def seed_all(SessionLocal):
             ("Golden Temple Langar","restaurant","Free meal.","Amritsar","free",35),
             ("Hyderabad Biryani House","restaurant","Biryani.","Hyderabad","low",36),
         ]
-        for b in biz:
+    for b in biz:
             db.add(Business(name=b[0], business_type=b[1], description=b[2], address=b[3], price_range=b[4], destination_id=b[5], phone="+91-9999999999", verification_status="verified", image_url="https://picsum.photos/seed/" + b[0].replace(" ","") + "/400/300"))
-        db.commit()
-
-        reviews = [
+    db.commit()
+    reviews = [ 
             ("Amazing temples!",5,1),("Great walk.",5,1),("Beautiful beach.",4,2),
             ("Sun Temple stunning.",5,3),("Saw dolphins!",5,5),("Thrilling safari.",5,7),
             ("Jaipur dream!",5,11),("Udaipur sunset.",5,12),("Munnar magical.",5,15),
@@ -145,18 +144,18 @@ def seed_all(SessionLocal):
             ("Golden Temple.",5,35),("Biryani paradise.",5,36),("Peaceful beach.",4,9),
             ("Pattachitra fun.",5,10),("Dhauli views.",4,4),
         ]
-        for r in reviews:
+    for r in reviews:
             db.add(Review(author_name="Demo Tourist", destination_id=r[2], rating=r[1], comment=r[0]))
-        db.commit()
+    db.commit()
 
-        metrics = [
+    metrics = [
             (1, 1200, 180, 850, 45),(2, 2500, 320, 1400, 60),(3, 1800, 250, 1100, 55),
             (4, 150, 20, 90, 8),(5, 600, 85, 420, 25),(6, 320, 45, 210, 12),
             (7, 180, 25, 130, 10),(8, 140, 18, 100, 7),(9, 220, 30, 160, 11),(10, 90, 12, 70, 5),
         ]
-        for m in metrics:
+    for m in metrics:
             db.add(DemandMetric(destination_id=m[0], visitor_count=m[1], booking_count=m[2], search_count=m[3], recent_review_count=m[4]))
-        db.commit()
-        print("Seed data loaded. Demo users: tourist@demo.com / demo1234")
+    db.commit()
+    print("Seed data loaded. Demo users: tourist@demo.com / demo1234")
     finally:
-        db.close()
+    db.close()
