@@ -105,7 +105,7 @@ export default function AIAssistant() {
                 onChange={e => setInput(e.target.value)}
                 onKeyDown={e => e.key === "Enter" && sendMessage(input)}
                 placeholder="Ask about destinations..."
-                className="flex-1 px-3 py-2 text-sm border rounded-full focus:outline-none focus:ring-2 focus:ring-brand-teal"
+                className="flex-1 px-3 py-2 text-sm border rounded-full focus:outline-none focus:ring-2 focus:ring-brand-teal text-gray-900 bg-white"
               />
               <button onClick={() => sendMessage(input)} className="bg-brand-saffron text-white rounded-full p-2" aria-label="Send">
                 <Send size={16} />
