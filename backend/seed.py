@@ -5,18 +5,24 @@ from main import Profile, Destination, Activity, Guide, Business, Review, Demand
 def seed_all(SessionLocal):
     db = SessionLocal()
     try:
-        existing_count = db.query(Destination).count()
-        if existing_count >= 30:
-            return
-        db.query(DemandMetric).delete()
-        db.query(Review).delete()
-        db.query(Activity).delete()
-        db.query(Business).delete()
-        db.query(Guide).delete()
-        db.query(Destination).delete()
-        db.query(Profile).delete()
-        db.commit()
-        users = [
+                existing_count = db.query(Destination).count()
+                activity_count = db.query(Activity).count()
+                if existing_count >= 30 and activity_count >= 20:
+                 return
+                from sqlalchemy import text
+                from main import engine
+                if "postgresql" in str(engine.url):
+                 db.execute(text("TRUNCATE TABLE demand_metrics, reviews, activities, businesses, guides, destinations, profiles RESTART IDENTITY CASCADE"))
+                else:
+                 db.query(DemandMetric).delete()
+                 db.query(Review).delete()
+                 db.query(Activity).delete()
+                 db.query(Business).delete()
+                 db.query(Guide).delete()
+                 db.query(Destination).delete()
+                 db.query(Profile).delete()
+                 db.commit()
+                 users = [
             Profile(email="tourist@demo.com", hashed_password=hash_pw("demo1234"), full_name="Demo Tourist", role="tourist", consent_given=True),
             Profile(email="guide@demo.com", hashed_password=hash_pw("demo1234"), full_name="Demo Guide", role="guide", consent_given=True),
             Profile(email="business@demo.com", hashed_password=hash_pw("demo1234"), full_name="Demo Business", role="business", consent_given=True),
