@@ -15,8 +15,8 @@ def seed_all(SessionLocal):
             db.query(Business).delete()
             db.query(Guide).delete()
             db.query(Destination).delete()
+            db.query(Profile).delete()
             db.commit()
-
         users = [
             Profile(email="tourist@demo.com", hashed_password=hash_pw("demo1234"), full_name="Demo Tourist", role="tourist", consent_given=True),
             Profile(email="guide@demo.com", hashed_password=hash_pw("demo1234"), full_name="Demo Guide", role="guide", consent_given=True),
