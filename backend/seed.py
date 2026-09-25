@@ -8,15 +8,14 @@ def seed_all(SessionLocal):
         existing_count = db.query(Destination).count()
         if existing_count >= 30:
             return
-        if existing_count > 0:
-            db.query(DemandMetric).delete()
-            db.query(Review).delete()
-            db.query(Activity).delete()
-            db.query(Business).delete()
-            db.query(Guide).delete()
-            db.query(Destination).delete()
-            db.query(Profile).delete()
-            db.commit()
+        db.query(DemandMetric).delete()
+        db.query(Review).delete()
+        db.query(Activity).delete()
+        db.query(Business).delete()
+        db.query(Guide).delete()
+        db.query(Destination).delete()
+        db.query(Profile).delete()
+        db.commit()
         users = [
             Profile(email="tourist@demo.com", hashed_password=hash_pw("demo1234"), full_name="Demo Tourist", role="tourist", consent_given=True),
             Profile(email="guide@demo.com", hashed_password=hash_pw("demo1234"), full_name="Demo Guide", role="guide", consent_given=True),
