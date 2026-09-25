@@ -6,18 +6,16 @@ def seed_all(SessionLocal):
     db = SessionLocal()
     try:
         existing_count = db.query(Destination).count()
-if existing_count >= 30:
-    return  # already seeded with full dataset
-# If too few destinations, wipe and re-seed with the new 36-destination data
-if existing_count > 0:
-    db.query(DemandMetric).delete()
-    db.query(Review).delete()
-    db.query(Activity).delete()
-    db.query(Business).delete()
-    db.query(Guide).delete()
-    db.query(Destination).delete()
-    db.commit()
-    print("Cleared old destinations, re-seeding with full dataset...")
+        if existing_count >= 30:
+            return
+        if existing_count > 0:
+            db.query(DemandMetric).delete()
+            db.query(Review).delete()
+            db.query(Activity).delete()
+            db.query(Business).delete()
+            db.query(Guide).delete()
+            db.query(Destination).delete()
+            db.commit()
 
         users = [
             Profile(email="tourist@demo.com", hashed_password=hash_pw("demo1234"), full_name="Demo Tourist", role="tourist", consent_given=True),
@@ -30,42 +28,42 @@ if existing_count > 0:
         db.commit()
 
         dests = [
-            ("Bhubaneswar","bhubaneswar","Odisha","Khordha","Temple city with ancient Kalinga architecture.","heritage,culture,food",20.2961,85.8245,"Oct-Mar",False),
-            ("Puri","puri","Odisha","Puri","Coastal spiritual town with Jagannath Temple and golden beaches.","spiritual,beach,culture",19.8135,85.8312,"Oct-Feb",False),
-            ("Konark","konark","Odisha","Puri","UNESCO Sun Temple with iconic stone chariot architecture.","heritage,culture",19.8876,86.0945,"Oct-Mar",False),
-            ("Dhauli","dhauli","Odisha","Khordha","Peace pagoda and Ashokan edicts with hilltop views.","heritage,spiritual",20.1917,85.8400,"Oct-Mar",True),
-            ("Chilika Lake","chilika","Odisha","Ganjam","Asia largest brackish lagoon with dolphins and migratory birds.","nature,wildlife",19.7175,85.3206,"Nov-Feb",False),
-            ("Cuttack","cuttack","Odisha","Cuttack","Silver city with riverside forts and filigree crafts.","heritage,shopping,food",20.4625,85.8830,"Oct-Mar",True),
-            ("Similipal","similipal","Odisha","Mayurbhanj","Tiger reserve and biosphere with waterfalls and tribal culture.","wildlife,nature,adventure",21.9500,86.3167,"Nov-Mar",True),
-            ("Satkosia","satkosia","Odisha","Angul","Gorge sanctuary on Mahanadi, ideal for river safaris.","nature,wildlife,adventure",20.6500,84.9333,"Oct-Feb",True),
-            ("Gopalpur","gopalpur","Odisha","Ganjam","Quiet beach town with colonial charm and lighthouse.","beach,wellness",19.2667,84.9167,"Oct-Mar",True),
-            ("Raghurajpur","raghurajpur","Odisha","Puri","Heritage crafts village for Pattachitra paintings and dance.","culture,heritage,shopping",19.8547,85.8622,"Oct-Mar",True),
-            ("Jaipur","jaipur","Rajasthan","Jaipur","The Pink City with Amber Fort, Hawa Mahal, and royal palaces.","heritage,culture,shopping",26.9124,75.7873,"Oct-Mar",False),
-            ("Udaipur","udaipur","Rajasthan","Udaipur","City of Lakes with palaces and sunset boat rides.","heritage,wellness,culture",24.5854,73.7125,"Oct-Mar",True),
-            ("Jaisalmer","jaisalmer","Rajasthan","Jaisalmer","Golden desert city with sand dunes and camel safaris.","heritage,adventure,culture",26.9157,70.9083,"Nov-Feb",True),
-            ("Ranthambore","ranthambore","Rajasthan","Sawai Madhopur","Famous tiger reserve with historic fort views.","wildlife,nature",26.0173,76.5026,"Oct-Apr",False),
-            ("Munnar","munnar","Kerala","Idukki","Rolling tea plantations, misty hills, and spice gardens.","nature,wellness",10.0889,77.0595,"Sep-May",False),
-            ("Alleppey","alleppey","Kerala","Alappuzha","Venice of the East with backwater houseboat cruises.","nature,wellness,culture",9.4981,76.3388,"Sep-Mar",False),
-            ("Kovalam","kovalam","Kerala","Thiruvananthapuram","Crescent beaches and Ayurvedic wellness retreats.","beach,wellness",8.4004,76.9787,"Oct-Mar",True),
-            ("Wayanad","wayanad","Kerala","Wayanad","Western Ghats forests, tribal culture, and ancient caves.","nature,wildlife,adventure",11.6854,76.1320,"Oct-May",True),
-            ("Hampi","hampi","Karnataka","Vijayanagara","UNESCO ruins of the Vijayanagara empire.","heritage,culture",15.3350,76.4600,"Oct-Feb",False),
-            ("Coorg","coorg","Karnataka","Kodagu","Coffee plantations, misty hills, and Kaveri river.","nature,wellness",12.3375,75.8069,"Oct-Mar",True),
-            ("Mysore","mysore","Karnataka","Mysuru","Royal Mysore Palace, Chamundi Hills, and silk sarees.","heritage,culture,shopping",12.2958,76.6394,"Oct-Feb",True),
-            ("Madurai","madurai","Tamil Nadu","Madurai","Ancient temple city with Meenakshi Amman Temple.","heritage,spiritual,culture",9.9252,78.1198,"Oct-Mar",False),
-            ("Mahabalipuram","mahabalipuram","Tamil Nadu","Chengalpattu","UNESCO shore temples and rock-cut monuments.","heritage,culture",12.6208,80.1945,"Nov-Feb",True),
-            ("Ooty","ooty","Tamil Nadu","Nilgiris","Nilgiri hill station with tea gardens and toy train.","nature,wellness",11.4102,76.6950,"Mar-Jun",True),
-            ("Varanasi","varanasi","Uttar Pradesh","Varanasi","Ganga ghats, evening aarti, and ancient spiritual heritage.","spiritual,heritage,culture",25.3176,82.9739,"Oct-Mar",False),
-            ("Agra","agra","Uttar Pradesh","Agra","Taj Mahal, Agra Fort, and Mughal heritage.","heritage,culture",27.1767,78.0081,"Oct-Mar",False),
-            ("Rishikesh","rishikesh","Uttarakhand","Dehradun","Yoga capital of the world, Ganga aarti, river rafting.","wellness,adventure,spiritual",30.0869,78.2676,"Sep-Apr",True),
-            ("North Goa","north-goa","Goa","North Goa","Baga, Calangute beaches, Portuguese forts, water sports.","beach,adventure,food",15.5527,73.7517,"Nov-Feb",False),
-            ("Manali","manali","Himachal Pradesh","Kullu","Snow peaks, Solang Valley, and old Manali cafes.","adventure,nature",32.2432,77.1892,"Mar-Jun",True),
-            ("Darjeeling","darjeeling","West Bengal","Darjeeling","Tea gardens, toy train, and Himalayan views.","nature,wellness,culture",27.0360,88.2627,"Mar-May",True),
-            ("Kaziranga","kaziranga","Assam","Golaghat","UNESCO home of the one-horned rhino.","wildlife,nature",26.5775,93.1711,"Nov-Apr",False),
-            ("Ajanta Ellora","ajanta-ellora","Maharashtra","Aurangabad","UNESCO rock-cut caves with ancient Buddhist art.","heritage,culture",20.5519,75.7033,"Oct-Mar",True),
-            ("Rann of Kutch","rann-of-kutch","Gujarat","Kutch","White salt desert, full moon nights, and Kutchi crafts.","nature,culture,shopping",23.7337,69.8597,"Nov-Feb",True),
-            ("Khajuraho","khajuraho","Madhya Pradesh","Chhatarpur","UNESCO temples with intricate carvings.","heritage,culture",24.8318,79.9199,"Oct-Mar",False),
-            ("Amritsar","amritsar","Punjab","Amritsar","Golden Temple, Wagah border, and Punjabi cuisine.","spiritual,food,culture",31.6340,74.8723,"Oct-Mar",True),
-            ("Hyderabad","hyderabad","Telangana","Hyderabad","Charminar, Golconda Fort, biryani and pearls.","heritage,food,shopping",17.3850,78.4867,"Oct-Feb",True),
+            ("Bhubaneswar","bhubaneswar","Odisha","Khordha","Temple city.","heritage,culture,food",20.2961,85.8245,"Oct-Mar",False),
+            ("Puri","puri","Odisha","Puri","Coastal town.","spiritual,beach,culture",19.8135,85.8312,"Oct-Feb",False),
+            ("Konark","konark","Odisha","Puri","Sun Temple.","heritage,culture",19.8876,86.0945,"Oct-Mar",False),
+            ("Dhauli","dhauli","Odisha","Khordha","Peace pagoda.","heritage,spiritual",20.1917,85.8400,"Oct-Mar",True),
+            ("Chilika Lake","chilika","Odisha","Ganjam","Lagoon.","nature,wildlife",19.7175,85.3206,"Nov-Feb",False),
+            ("Cuttack","cuttack","Odisha","Cuttack","Silver city.","heritage,shopping,food",20.4625,85.8830,"Oct-Mar",True),
+            ("Similipal","similipal","Odisha","Mayurbhanj","Tiger reserve.","wildlife,nature,adventure",21.9500,86.3167,"Nov-Mar",True),
+            ("Satkosia","satkosia","Odisha","Angul","Gorge sanctuary.","nature,wildlife,adventure",20.6500,84.9333,"Oct-Feb",True),
+            ("Gopalpur","gopalpur","Odisha","Ganjam","Beach town.","beach,wellness",19.2667,84.9167,"Oct-Mar",True),
+            ("Raghurajpur","raghurajpur","Odisha","Puri","Crafts village.","culture,heritage,shopping",19.8547,85.8622,"Oct-Mar",True),
+            ("Jaipur","jaipur","Rajasthan","Jaipur","Pink City.","heritage,culture,shopping",26.9124,75.7873,"Oct-Mar",False),
+            ("Udaipur","udaipur","Rajasthan","Udaipur","City of Lakes.","heritage,wellness,culture",24.5854,73.7125,"Oct-Mar",True),
+            ("Jaisalmer","jaisalmer","Rajasthan","Jaisalmer","Desert city.","heritage,adventure,culture",26.9157,70.9083,"Nov-Feb",True),
+            ("Ranthambore","ranthambore","Rajasthan","Sawai Madhopur","Tiger reserve.","wildlife,nature",26.0173,76.5026,"Oct-Apr",False),
+            ("Munnar","munnar","Kerala","Idukki","Tea plantations.","nature,wellness",10.0889,77.0595,"Sep-May",False),
+            ("Alleppey","alleppey","Kerala","Alappuzha","Backwaters.","nature,wellness,culture",9.4981,76.3388,"Sep-Mar",False),
+            ("Kovalam","kovalam","Kerala","Thiruvananthapuram","Ayurveda.","beach,wellness",8.4004,76.9787,"Oct-Mar",True),
+            ("Wayanad","wayanad","Kerala","Wayanad","Western Ghats.","nature,wildlife,adventure",11.6854,76.1320,"Oct-May",True),
+            ("Hampi","hampi","Karnataka","Vijayanagara","UNESCO ruins.","heritage,culture",15.3350,76.4600,"Oct-Feb",False),
+            ("Coorg","coorg","Karnataka","Kodagu","Coffee hills.","nature,wellness",12.3375,75.8069,"Oct-Mar",True),
+            ("Mysore","mysore","Karnataka","Mysuru","Royal palace.","heritage,culture,shopping",12.2958,76.6394,"Oct-Feb",True),
+            ("Madurai","madurai","Tamil Nadu","Madurai","Meenakshi Temple.","heritage,spiritual,culture",9.9252,78.1198,"Oct-Mar",False),
+            ("Mahabalipuram","mahabalipuram","Tamil Nadu","Chengalpattu","Shore temples.","heritage,culture",12.6208,80.1945,"Nov-Feb",True),
+            ("Ooty","ooty","Tamil Nadu","Nilgiris","Hill station.","nature,wellness",11.4102,76.6950,"Mar-Jun",True),
+            ("Varanasi","varanasi","Uttar Pradesh","Varanasi","Ganga ghats.","spiritual,heritage,culture",25.3176,82.9739,"Oct-Mar",False),
+            ("Agra","agra","Uttar Pradesh","Agra","Taj Mahal.","heritage,culture",27.1767,78.0081,"Oct-Mar",False),
+            ("Rishikesh","rishikesh","Uttarakhand","Dehradun","Yoga capital.","wellness,adventure,spiritual",30.0869,78.2676,"Sep-Apr",True),
+            ("North Goa","north-goa","Goa","North Goa","Baga beaches.","beach,adventure,food",15.5527,73.7517,"Nov-Feb",False),
+            ("Manali","manali","Himachal Pradesh","Kullu","Snow peaks.","adventure,nature",32.2432,77.1892,"Mar-Jun",True),
+            ("Darjeeling","darjeeling","West Bengal","Darjeeling","Tea gardens.","nature,wellness,culture",27.0360,88.2627,"Mar-May",True),
+            ("Kaziranga","kaziranga","Assam","Golaghat","Rhinos.","wildlife,nature",26.5775,93.1711,"Nov-Apr",False),
+            ("Ajanta Ellora","ajanta-ellora","Maharashtra","Aurangabad","Cave art.","heritage,culture",20.5519,75.7033,"Oct-Mar",True),
+            ("Rann of Kutch","rann-of-kutch","Gujarat","Kutch","Salt desert.","nature,culture,shopping",23.7337,69.8597,"Nov-Feb",True),
+            ("Khajuraho","khajuraho","Madhya Pradesh","Chhatarpur","Carved temples.","heritage,culture",24.8318,79.9199,"Oct-Mar",False),
+            ("Amritsar","amritsar","Punjab","Amritsar","Golden Temple.","spiritual,food,culture",31.6340,74.8723,"Oct-Mar",True),
+            ("Hyderabad","hyderabad","Telangana","Hyderabad","Biryani city.","heritage,food,shopping",17.3850,78.4867,"Oct-Feb",True),
         ]
         for d in dests:
             db.add(Destination(
@@ -78,88 +76,69 @@ if existing_count > 0:
         db.commit()
 
         acts = [
-            (1,"Lingaraj Temple Heritage Walk","Guided walk through 11th-century temple complex.","heritage",120,"300-800 INR"),
-            (1,"Odissi Dance Performance","Evening classical Odissi dance show.","culture",90,"500-1200 INR"),
-            (2,"Jagannath Temple Darshan","Guided spiritual visit with priest.","spiritual",120,"Free"),
-            (2,"Puri Beach Sunset Walk","Guided sunset walk along golden beach.","beach",90,"200-500 INR"),
-            (3,"Sun Temple Architecture Tour","Deep-dive into Konark stone chariot.","heritage",150,"400-900 INR"),
-            (5,"Chilika Dolphin Boat Safari","Morning boat ride to spot dolphins.","wildlife",180,"1500-2500 INR"),
-            (7,"Similipal Jungle Safari","Jeep safari in tiger reserve.","adventure",300,"2000-3500 INR"),
-            (8,"Satkosia River Cruise","Boat cruise through Mahanadi gorge.","adventure",150,"1000-1800 INR"),
-            (11,"Jaipur Amber Fort Tour","Guided tour of Amber Fort and Hawa Mahal.","heritage",240,"500-1500 INR"),
-            (11,"Rajasthani Food Walk","Street food and traditional thali tour.","food",120,"800-1500 INR"),
-            (12,"Udaipur Lake Palace Boat Ride","Sunset boat ride on Lake Pichola.","heritage",90,"1000-2000 INR"),
-            (14,"Ranthambore Tiger Safari","Morning jeep safari in tiger reserve.","wildlife",240,"2000-4000 INR"),
-            (15,"Munnar Tea Plantation Walk","Walk through tea gardens with tasting.","nature",120,"300-800 INR"),
-            (16,"Alleppey Backwater Houseboat","Overnight houseboat cruise.","nature",720,"5000-12000 INR"),
-            (17,"Kovalam Ayurvedic Massage","Traditional Kerala Ayurveda session.","wellness",90,"1500-3000 INR"),
-            (18,"Wayanad Wildlife Safari","Safari through Western Ghats forests.","wildlife",180,"1500-3000 INR"),
-            (19,"Hampi Ruins Cycling Tour","Cycle through Vijayanagara ruins.","heritage",240,"500-1200 INR"),
-            (21,"Mysore Palace Sound & Light","Evening sound and light show.","heritage",60,"200-500 INR"),
-            (22,"Madurai Temple Walk","Guided Meenakshi Amman Temple tour.","heritage",120,"300-800 INR"),
-            (23,"Mahabalipuram Shore Temple Tour","Walk through UNESCO shore temples.","heritage",120,"300-700 INR"),
-            (25,"Varanasi Ganga Aarti","Evening Ganga aarti at Dashashwamedh Ghat.","spiritual",120,"Free"),
-            (26,"Taj Mahal Sunrise Tour","Early morning Taj Mahal visit.","heritage",180,"500-1500 INR"),
-            (27,"Rishikesh River Rafting","White water rafting on Ganga.","adventure",180,"1000-2500 INR"),
-            (28,"North Goa Beach Hopping","Visit Baga, Calangute, Anjuna beaches.","beach",240,"800-2000 INR"),
-            (29,"Manali Solang Valley Tour","Snow activities and paragliding.","adventure",300,"1500-3500 INR"),
-            (30,"Darjeeling Toy Train Ride","Heritage Darjeeling Himalayan Railway ride.","culture",120,"800-2000 INR"),
-            (31,"Kaziranga Elephant Safari","Early morning elephant safari to see rhinos.","wildlife",120,"1500-3000 INR"),
-            (32,"Ajanta Ellora Caves Tour","Guided tour of ancient rock-cut caves.","heritage",240,"600-1500 INR"),
-            (33,"Rann of Kutch White Desert","Visit the white salt desert at full moon.","nature",180,"1000-2000 INR"),
-            (34,"Khajuraho Temple Tour","Guided tour of UNESCO temples.","heritage",150,"400-1000 INR"),
-            (35,"Golden Temple Visit","Darshan at the Golden Temple.","spiritual",120,"Free"),
-            (36,"Hyderabad Biryani Trail","Biryani and street food walk.","food",120,"800-1500 INR"),
+            (1,"Lingaraj Temple Walk","Temple tour.","heritage",120,"300-800 INR"),
+            (2,"Jagannath Darshan","Spiritual visit.","spiritual",120,"Free"),
+            (3,"Konark Sun Temple Tour","Chariot tour.","heritage",150,"400-900 INR"),
+            (5,"Chilika Dolphin Safari","Dolphins.","wildlife",180,"1500-2500 INR"),
+            (7,"Similipal Safari","Tiger safari.","adventure",300,"2000-3500 INR"),
+            (11,"Amber Fort Tour","Jaipur fort.","heritage",240,"500-1500 INR"),
+            (14,"Tiger Safari","Ranthambore.","wildlife",240,"2000-4000 INR"),
+            (15,"Munnar Tea Walk","Tea tour.","nature",120,"300-800 INR"),
+            (16,"Alleppey Houseboat","Backwaters.","nature",720,"5000-12000 INR"),
+            (19,"Hampi Cycling Tour","Ruins.","heritage",240,"500-1200 INR"),
+            (25,"Varanasi Ganga Aarti","Aarti.","spiritual",120,"Free"),
+            (26,"Taj Mahal Sunrise","Sunrise Taj.","heritage",180,"500-1500 INR"),
+            (27,"Rishikesh Rafting","Rafting.","adventure",180,"1000-2500 INR"),
+            (31,"Kaziranga Safari","Rhino safari.","wildlife",120,"1500-3000 INR"),
+            (35,"Golden Temple Visit","Darshan.","spiritual",120,"Free"),
+            (36,"Hyderabad Biryani Trail","Biryani walk.","food",120,"800-1500 INR"),
         ]
         for a in acts:
             db.add(Activity(destination_id=a[0], name=a[1], description=a[2], category=a[3], duration_minutes=a[4], price_range=a[5]))
         db.commit()
 
         guides = [
-            ("Rajesh Mohanty","20 years guiding heritage tours across Odisha.","Bhubaneswar",["English","Hindi","Odia"],["heritage","culture"],1800,4.8,34),
-            ("Priya Das","Specialist in Odissi dance and craft villages.","Puri",["English","Odia"],["culture","shopping"],1500,4.7,28),
-            ("Sanjay Behera","Wildlife and nature guide at Chilika and Similipal.","Chilika",["English","Hindi","Odia"],["wildlife","nature"],2200,4.9,42),
-            ("Anita Sahoo","Food walks and street food experiences.","Cuttack",["English","Hindi"],["food","culture"],1200,4.6,19),
-            ("Debasis Nayak","Adventure guide for trekking and river safaris.","Satkosia",["English","Odia"],["adventure","nature"],2000,4.7,25),
-            ("Rohan Sharma","Rajasthan heritage and desert expert.","Jaipur",["English","Hindi"],["heritage","culture"],2000,4.8,31),
-            ("Lakshmi Nair","Kerala backwater and Ayurveda guide.","Alleppey",["English","Malayalam"],["nature","wellness"],1900,4.7,22),
-            ("Karthik Iyer","Tamil Nadu temple trails and food.","Madurai",["English","Tamil"],["heritage","food"],1700,4.6,18),
+            ("Rajesh Mohanty","Heritage guide.","Bhubaneswar",["English","Hindi","Odia"],["heritage","culture"],1800,4.8,34),
+            ("Priya Das","Odissi expert.","Puri",["English","Odia"],["culture"],1500,4.7,28),
+            ("Sanjay Behera","Wildlife guide.","Chilika",["English","Hindi"],["wildlife"],2200,4.9,42),
+            ("Anita Sahoo","Food walk guide.","Cuttack",["English","Hindi"],["food"],1200,4.6,19),
+            ("Debasis Nayak","Adventure guide.","Satkosia",["English"],["adventure"],2000,4.7,25),
+            ("Rohan Sharma","Rajasthan expert.","Jaipur",["English","Hindi"],["heritage"],2000,4.8,31),
+            ("Lakshmi Nair","Kerala guide.","Alleppey",["English"],["nature"],1900,4.7,22),
+            ("Karthik Iyer","TN temple guide.","Madurai",["English","Tamil"],["heritage"],1700,4.6,18),
         ]
         for g in guides:
             db.add(Guide(name=g[0], bio=g[1], location=g[2], languages=g[3], specialties=g[4], price_per_day=g[5], rating=g[6], review_count=g[7], verification_status="verified", image_url="https://i.pravatar.cc/200?u=" + g[0].replace(" ","")))
         db.commit()
 
         biz = [
-            ("Hotel Kalinga Grand","hotel","Comfortable business hotel in central Bhubaneswar.","Bhubaneswar","mid",1),
-            ("Chilika Lake Resort","hotel","Eco-resort facing Chilika lagoon.","Chilika","high",5),
-            ("Dalma Restaurant","restaurant","Authentic Odia thali and vegetarian cuisine.","Bhubaneswar","low",1),
-            ("Puri Beach Shack","restaurant","Seafood and Oriya street food by the sea.","Puri","low",2),
-            ("Utkal Handicrafts Emporium","shop","Handloom, silver filigree and Pattachitra.","Cuttack","low",6),
-            ("Konark Adventure Tours","activity","Guided heritage and cycling tours.","Konark","low",3),
-            ("Similipal Nature Camps","activity","Jungle camping and safari packages.","Similipal","mid",7),
-            ("Gopalpur Surf School","activity","Beginner and intermediate surf lessons.","Gopalpur","low",9),
-            ("Jaipur Heritage Haveli","hotel","Royal heritage hotel in old Jaipur.","Jaipur","high",11),
-            ("Rajasthani Thali House","restaurant","Traditional Rajasthani thali and sweets.","Jaipur","low",11),
-            ("Kerala Ayurveda Retreat","hotel","Backwater resort with Ayurveda spa.","Alleppey","high",16),
-            ("Mysore Silk Emporium","shop","Authentic Mysore silk sarees and handicrafts.","Mysore","mid",21),
-            ("Golden Temple Langar","restaurant","Free community meal at Golden Temple.","Amritsar","free",35),
-            ("Hyderabad Biryani House","restaurant","Authentic Hyderabadi dum biryani.","Hyderabad","low",36),
+            ("Hotel Kalinga Grand","hotel","Business hotel.","Bhubaneswar","mid",1),
+            ("Chilika Lake Resort","hotel","Eco-resort.","Chilika","high",5),
+            ("Dalma Restaurant","restaurant","Odia thali.","Bhubaneswar","low",1),
+            ("Puri Beach Shack","restaurant","Seafood.","Puri","low",2),
+            ("Utkal Handicrafts","shop","Handloom.","Cuttack","low",6),
+            ("Konark Tours","activity","Heritage tours.","Konark","low",3),
+            ("Similipal Camps","activity","Camping.","Similipal","mid",7),
+            ("Gopalpur Surf","activity","Surf lessons.","Gopalpur","low",9),
+            ("Jaipur Heritage Haveli","hotel","Royal stay.","Jaipur","high",11),
+            ("Rajasthani Thali House","restaurant","Thali.","Jaipur","low",11),
+            ("Kerala Ayurveda Retreat","hotel","Ayurveda resort.","Alleppey","high",16),
+            ("Mysore Silk Emporium","shop","Silk.","Mysore","mid",21),
+            ("Golden Temple Langar","restaurant","Free meal.","Amritsar","free",35),
+            ("Hyderabad Biryani House","restaurant","Biryani.","Hyderabad","low",36),
         ]
         for b in biz:
             db.add(Business(name=b[0], business_type=b[1], description=b[2], address=b[3], price_range=b[4], destination_id=b[5], phone="+91-9999999999", verification_status="verified", image_url="https://picsum.photos/seed/" + b[0].replace(" ","") + "/400/300"))
         db.commit()
 
         reviews = [
-            ("Amazing temples and food!",5,1),("Great heritage walk with Rajesh.",5,1),
-            ("Beach was beautiful at sunset.",4,2),("Sun Temple is breathtaking.",5,3),
-            ("Saw dolphins! Magical experience.",5,5),("Silver filigree workshop was fun.",4,6),
-            ("Safari was thrilling.",5,7),("Quiet and peaceful beach.",4,9),
-            ("Loved the Pattachitra class.",5,10),("Dhauli pagoda has great views.",4,4),
-            ("Jaipur is a dream!",5,11),("Udaipur sunset was unforgettable.",5,12),
-            ("Munnar tea gardens are magical.",5,15),("Alleppey houseboat was serene.",5,16),
-            ("Hampi ruins are majestic.",4,19),("Varanasi aarti gave me goosebumps.",5,25),
-            ("Taj Mahal at sunrise - beyond words.",5,26),("Rishikesh rafting was epic.",5,27),
-            ("Kaziranga safari - saw 3 rhinos!",5,31),("Amritsar Golden Temple is divine.",5,35),
+            ("Amazing temples!",5,1),("Great walk.",5,1),("Beautiful beach.",4,2),
+            ("Sun Temple stunning.",5,3),("Saw dolphins!",5,5),("Thrilling safari.",5,7),
+            ("Jaipur dream!",5,11),("Udaipur sunset.",5,12),("Munnar magical.",5,15),
+            ("Alleppey serene.",5,16),("Hampi majestic.",4,19),("Varanasi divine.",5,25),
+            ("Taj sunrise!",5,26),("Rafting epic.",5,27),("3 rhinos!",5,31),
+            ("Golden Temple.",5,35),("Biryani paradise.",5,36),("Peaceful beach.",4,9),
+            ("Pattachitra fun.",5,10),("Dhauli views.",4,4),
         ]
         for r in reviews:
             db.add(Review(author_name="Demo Tourist", destination_id=r[2], rating=r[1], comment=r[0]))
