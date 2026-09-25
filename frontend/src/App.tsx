@@ -76,11 +76,16 @@ export default function App() {
                 <select
                  className="bg-white/10 text-white px-2 py-1 rounded text-sm border border-white/20 mr-1"
                  aria-label="Language"
-                 defaultValue="English">
-                 <option className="text-black">English</option>
-                 <option className="text-black">हिंदी</option>
-                 <option className="text-black">ଓଡ଼ିଆ</option>
-                 </select>
+                 defaultValue={localStorage.getItem("lang") || "English"}
+                 onChange={(e) => {
+                 localStorage.setItem("lang", e.target.value);
+                window.dispatchEvent(new Event("langChange"));
+                 }}
+                  >
+                <option className="text-black">English</option>
+                <option className="text-black">हिंदी</option>
+                <option className="text-black">ଓଡ଼ିଆ</option>
+                </select>
                  {navLink("/login", "Login")}
                  <Link to="/register" className="ml-2 px-4 py-2 rounded bg-brand-saffron hover:opacity-90 font-medium">
                   Sign Up
