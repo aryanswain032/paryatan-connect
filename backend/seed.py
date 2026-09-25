@@ -1,12 +1,25 @@
-﻿from sqlalchemy.orm import Session
+﻿from sqlalchemy.orm
+import Session
 from main import Profile, Destination, Activity, Guide, Business, Review, DemandMetric, hash_pw
 
 
 def seed_all(SessionLocal):
     db = SessionLocal()
     try:
-        if db.query(Destination).count() > 0:
-            return
+        existing_count = db.query(Destination).count()
+if existing_count >= 30:
+    return  # already seeded with full dataset
+# If too few destinations, wipe and re-seed with the new 36-destination data
+if existing_count > 0:
+    db.query(DemandMetric).delete()
+    db.query(Review).delete()
+    db.query(Activity).delete()
+    db.query(Business).delete()
+    db.query(Guide).delete()
+    db.query(Favorite).delete()
+    db.query(Destination).delete()
+    db.commit()
+    print("Cleared old destinations, re-seeding with full dataset...")
 
         users = [
             Profile(email="tourist@demo.com", hashed_password=hash_pw("demo1234"), full_name="Demo Tourist", role="tourist", consent_given=True),
