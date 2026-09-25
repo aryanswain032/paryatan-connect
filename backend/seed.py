@@ -28,7 +28,7 @@ def seed_all(SessionLocal):
             Profile(email="business@demo.com", hashed_password=hash_pw("demo1234"), full_name="Demo Business", role="business", consent_given=True),
             Profile(email="admin@demo.com", hashed_password=hash_pw("demo1234"), full_name="Demo Admin", role="admin", consent_given=True),
         ]
-    for u in users:
+        for u in users:
             db.add(u)
     db.commit()
 
