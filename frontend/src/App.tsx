@@ -13,7 +13,8 @@ import Register from "./pages/Register";
 import Bookings from "./pages/Bookings";
 import ProviderDashboard from "./pages/ProviderDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
-import { Compass, Menu, X } from "lucide-react";
+import { Compass, Menu, X, Globe } from "lucide-react";
+
 
 export default function App() {
   const [user, setUser] = useState<User | null>(null);
@@ -71,10 +72,18 @@ export default function App() {
               </>
             ) : (
               <>
-                {navLink("/login", "Login")}
-                <Link to="/register" className="ml-2 px-4 py-2 rounded bg-brand-saffron hover:opacity-90 font-medium">
+                <select
+                 className="bg-white/10 text-white px-2 py-1 rounded text-sm border border-white/20 mr-1"
+                 aria-label="Language"
+                 defaultValue="English">
+                 <option className="text-black">English</option>
+                 <option className="text-black">हिंदी</option>
+                 <option className="text-black">ଓଡ଼ିଆ</option>
+                 </select>
+                 {navLink("/login", "Login")}
+                 <Link to="/register" className="ml-2 px-4 py-2 rounded bg-brand-saffron hover:opacity-90 font-medium">
                   Sign Up
-                </Link>
+                 </Link>
               </>
             )}
           </div>
@@ -102,6 +111,7 @@ export default function App() {
                 {navLink("/register", "Sign Up")}
               </>
             )}
+            
           </div>
         )}
       </nav>
