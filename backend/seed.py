@@ -67,7 +67,7 @@ def seed_all(SessionLocal):
         ("Hyderabad", "hyderabad", "Telangana", "Hyderabad", "Biryani city.", "heritage,food", 17.3850, 78.4867, "Oct-Feb", True),
     ]
     for d in dests:
-        db.add(Destination(name=d[0], slug=d[1], state=d[2], district=d[3], description=d[4], categories=d[5].split(","), latitude=d[6], longitude=d[7], best_season=d[8], is_emerging=d[9],   image_url="https://placehold.co/800x500/0B3C5D/FFFFFF?text=" + d[0].replace(" ", "+")
+        db.add(Destination(name=d[0], slug=d[1], state=d[2], district=d[3], description=d[4], categories=d[5].split(","), latitude=d[6], longitude=d[7], best_season=d[8], is_emerging=d[9],   image_url="https://placehold.co/800x500/0B3C5D/FFFFFF?text=" + d[0].replace(" ", "+")))
 
     acts = [
         (1, "Lingaraj Temple Walk", "Temple tour.", "heritage", 120, "300-800 INR"),
