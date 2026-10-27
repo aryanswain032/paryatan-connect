@@ -6,7 +6,7 @@ from main import Profile, Destination, Activity, Guide, Business, Review, Demand
 def seed_all(SessionLocal):
     db = SessionLocal()
 
-    if db.query(Destination).count() >= 30 and db.query(Activity).count() >= 20:
+    if db.query(Destination).count() >= 30 and db.query(Activity).count() >= 10:
         db.close()
         return
 
